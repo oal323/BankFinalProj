@@ -56,6 +56,57 @@ namespace BankPrgm
             Assert.Equal(password, bank.cUser.Password);
             Assert.Equal(userName, bank.cUser.UserName);
         }
+        [Fact]
+        public void WrongUsername()
+        {
+            // Arrange
+            Bank bank = new Bank();
+            string name = "John Doe";
+            string address = "123 Main Street";
+            string contactInformation = "john.doe@example.com";
+            string password = "password";
+            string userName = "johndoe";
+            bank.CreateUser(name, address, contactInformation, password, userName);
+
+            // Act
+            try {
+                bank.Login("Wrong", password);
+                Assert.Fail("Exception Was not thrown");
+            }catch (FormatException){}
+            
+
+            // Assert
+            Assert.Null(bank.cUser.Name);
+            Assert.Null(bank.cUser.Address);
+            Assert.Null(bank.cUser.ContactInformation);
+            Assert.Null(bank.cUser.Password);
+            Assert.Null(bank.cUser.UserName);
+        }
+        public void WrongPassword()
+        {
+            // Arrange
+            Bank bank = new Bank();
+            string name = "John Doe";
+            string address = "123 Main Street";
+            string contactInformation = "john.doe@example.com";
+            string password = "password";
+            string userName = "johndoe";
+            bank.CreateUser(name, address, contactInformation, password, userName);
+
+            // Act
+            try {
+                bank.Login(userName, "Wrong");
+                Assert.Fail("Exception Was not thrown");
+            }catch (FormatException){}
+            
+
+            // Assert
+            Assert.Null(bank.cUser.Name);
+            Assert.Null(bank.cUser.Address);
+            Assert.Null(bank.cUser.ContactInformation);
+            Assert.Null(bank.cUser.Password);
+            Assert.Null(bank.cUser.UserName);
+        }
 
         [Fact]
         public void TestCreateAccount()

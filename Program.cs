@@ -62,14 +62,14 @@ namespace BankPrgm
         Transfer,
         Purchase
     }
-
+// handles main logic of the bank including console menue
     public class Bank
     {
         public readonly List<User> _users = new List<User>();
-        public User cUser;
-        public Account cAccount;
+        public User cUser = new User();
+        public Account cAccount = new Account();
         private Guid emptGuid = Guid.Empty;
-        public void throwError(string message)
+        public static void throwError(string message)
         {
             throw new FormatException(message);
         }
@@ -87,8 +87,8 @@ namespace BankPrgm
                 newUser.OwnedAccounts = new List<Account>(); ;
                 newUser.Password = Password;
                 newUser.UserName = UserName;
-                System.Console.WriteLine(newUser.ToString());
                 _users.Add(newUser);
+                
             }
             else
             {
@@ -120,15 +120,16 @@ namespace BankPrgm
                 {
                     Console.WriteLine("Welcome " + user.Name);
                     cUser = user;
+                    return;
                 }
                 else
                 {
-                    System.Console.WriteLine("Wrong Pass");
+                    throwError("Wrong Pass");
                 }
             }
             else
             {
-                System.Console.WriteLine("Wrong username");
+                throwError("Wrong username");
             }
         }
         // creates a new account object 
@@ -292,13 +293,14 @@ namespace BankPrgm
             static User cUser = _Bank.cUser;
             static void Main(string[] args)
             {
-                new BankTests().TestCreateUser();
+                /* new BankTests().TestCreateUser();
                 new BankTests().TestCreateAccount();
                 new BankTests().TestLogin();
                 new BankTests().TestSelectAccount();
                 new BankTests().TestTransaction();
                 new BankTests().TestOverDraft();
-                new BankTests().TestWithdrawl();
+                new BankTests().TestWithdrawl(); */
+                
                 while (MainMenu()) ;
             }
             private static void printInfo()
@@ -316,11 +318,19 @@ namespace BankPrgm
                     i++;
                 }
             }
+            public static void checkInput(string input)
+            {
+                if (input.Trim() == "")
+                {
+                    Bank.throwError("Error Empty Input");
+                }
+
+            }
             private static bool MainMenu()
             {
                 try
                 {
-                    if (cUser == null)
+                    if (cUser.Name == null)
                     {
                         Console.Clear();
                         Console.WriteLine("Choose an option:");
@@ -328,36 +338,40 @@ namespace BankPrgm
                         Console.WriteLine("2) Sign In");
                         Console.WriteLine("3) Exit");
                         Console.Write("\r\nSelect an option: ");
-
                         switch (Console.ReadLine())
                         {
                             case "1":
-                                string name;
-                                string address;
-                                decimal totalBalance;
-                                string contactInformation;
-                                string password;
-                                string userName;
+                                string name = "";
+                                string address = "";
+                                string contactInformation = "";
+                                string password = "";
+                                string userName = "";
 
                                 Console.Write("Enter your name: ");
-                                name = "Ian"; /* Console.ReadLine(); */
+                                name = Console.ReadLine();
+                                checkInput(name);
                                 Console.Write("Enter your contact information: ");
-                                contactInformation = "iarmstr6";/* Console.ReadLine(); */
+                                contactInformation = Console.ReadLine();
+                                checkInput(contactInformation);
                                 Console.Write("Enter your address: ");
-                                address = "iarmstr6";/* Console.ReadLine(); */
+                                address = Console.ReadLine();
+                                checkInput(address);
                                 Console.Write("Enter your username: ");
-                                userName = "user";/* Console.ReadLine(); */
+                                userName = Console.ReadLine();
+                                checkInput(userName);
                                 Console.Write("Enter your password: ");
-                                password = "password";/* Console.ReadLine(); */
+                                password = "password"; Console.ReadLine();
+                                checkInput(password);
                                 _Bank.CreateUser(name, address, contactInformation, password, userName);
+                                _Bank.Login(userName, password);
+                                cUser = _Bank.cUser;
                                 return true;
                             case "2":
                                 Console.Write("Enter your username: ");
-                                userName = "user";/* Console.ReadLine(); */
+                                userName = Console.ReadLine();
                                 Console.Write("Enter your password: ");
-                                password = "password"; /* Console.ReadLine(); */
+                                password = Console.ReadLine();
                                 _Bank.Login(userName, password);
-                                cUser = _Bank.cUser;
                                 return true;
                             case "3":
                                 return false;
@@ -480,19 +494,20 @@ namespace BankPrgm
                                 return true;
 
                             case "5":
-                                _Bank.cUser = null;
+                                cUser = new User();
                                 return true;
                             default:
                                 return true;
+
                         }
                     }
                 }
-                catch (FormatException e)
+                catch (FormatException f)
                 {
-                    System.Console.WriteLine(e);
+                    System.Console.WriteLine(f.Message);
+                    Thread.Sleep(1000);
                     return true;
                 }
-
             }
         }
     }
