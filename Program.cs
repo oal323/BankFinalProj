@@ -398,21 +398,20 @@ namespace BankPrgm
                                 switch (Console.ReadLine())
                                 {
                                     case "1":
+
                                         Console.WriteLine("Enter Starting Balance");
-                                        //input = //Console.ReadLine();
-                                        initBal = 1500;//Decimal.Parse(input);
+                                        string input = Console.ReadLine();
+                                        initBal = Decimal.Parse(input);
                                         Console.WriteLine("Enter Account Type");
-                                        //input = Console.ReadLine();
                                         acctType = AccountType.Checking;
 
                                         _Bank.CreateAccount(initBal, acctType);
                                         break;
                                     case "2":
                                         Console.WriteLine("Enter Starting Balance");
-                                        //input = //Console.ReadLine();
-                                        initBal = 1500;//Decimal.Parse(input);
+                                         input = Console.ReadLine();
+                                        initBal = Decimal.Parse(input);
                                         Console.WriteLine("Enter Account Type");
-                                        //input = Console.ReadLine();
                                         acctType = AccountType.Savings;
                                         break;
                                 }
