@@ -46,7 +46,6 @@ namespace BankPrgm
         public Guid Id { get; set; }
         public TransactionType Type { get; set; }
         public Guid Destination { get; set; }
-        public Guid Source { get; set; }
         public decimal Amount { get; set; }
 
         public Transaction()
@@ -166,12 +165,14 @@ namespace BankPrgm
                 case TransactionType.Deposit:
                     _Transaction.Destination = cAccount.Id;
                     cAccount.Balance += Amount;
+                    _Transaction.Amount=Amount;
                     break;
                 case TransactionType.Withdrawal:
                     _Transaction.Destination = cAccount.Id;
                     if (cAccount.Balance - Amount > 0)
                     {
                         cAccount.Balance -= Amount;
+                        _Transaction.Amount=Amount;
                     }
                     else
                     {
@@ -198,6 +199,7 @@ namespace BankPrgm
                         {
                             destinationAccount.Balance += Amount;
                             cAccount.Balance -= Amount;
+                            _Transaction.Amount=Amount;
                         }
                         else
                         {
@@ -224,6 +226,7 @@ namespace BankPrgm
                         {
                             destinationAccount.Balance += Amount;
                             cAccount.Balance -= Amount;
+                            _Transaction.Amount=Amount;
                         }
                         else
                         {
@@ -241,6 +244,7 @@ namespace BankPrgm
                     {
                         System.Console.WriteLine("You just spent $" + Amount);
                         cAccount.Balance -= Amount;
+                        _Transaction.Amount=Amount;
                     }
                     else
                     {
